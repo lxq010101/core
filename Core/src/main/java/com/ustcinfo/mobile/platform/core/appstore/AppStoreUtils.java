@@ -121,22 +121,21 @@ public class AppStoreUtils {
     }
 
     public static void launchAppByInfo(final Activity activity, final AppInfo info) {
-        switch (info.type) {
-            case 0:
-                try {
+            switch (info.type) {
+                case 0:
+                    try {
 
-                    NativeAppUtils.launch(activity, info);
-                } catch (ActivityNotFoundException ex) {
-                    TastyToast.makeText(activity, "没有找到该页面", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
-                }
-                break;
-            case 2:
-            case 3:
-                WebAppUtils.launch(activity, info);
-                break;
+                        NativeAppUtils.launch(activity, info);
+                    }catch (ActivityNotFoundException ex){
+                        TastyToast.makeText(activity,"没有找到该页面",TastyToast.LENGTH_SHORT,TastyToast.ERROR);
+                    }
+                    break;
+                case 2:
+                case 3:
+                    WebAppUtils.launch(activity, info);
+                    break;
         }
     }
-
     public static void launchAppByInfoByCodeByRedirectUri(final Activity activity, final AppInfo info, String code, String redirectUri) {
         switch (info.type) {
             case 0:
@@ -152,6 +151,7 @@ public class AppStoreUtils {
                 break;
         }
     }
+
 
 
     public static void uninstallAppByInfo(Context context, AppInfo info) {
