@@ -30,15 +30,7 @@ public class MLogin {
 
     private boolean autoLogin;
 
-    private String userId;
-
-    private String password;
-
-    private String verifyCode;
-
     private Context context;
-
-    private boolean isSSO;
 
     private LoginCallBack callback;
 
@@ -60,11 +52,6 @@ public class MLogin {
         autoLogin = MSharedPreferenceUtils.queryBooleanBySettings(context, Constants.KEY_PREFERENCE_AUTO_LOGIN);
         String userId = UserInfo.get().getUserIdCache();
         String pwd = UserInfo.get().getPasswordCache();
-        //测试：直接登录
-//        autoLogin = true ;
-//        userId = "H8472580 " ;
-//        pwd = "12345" ;
-
         if (userId != null && pwd != null)
             loginBySSO(autoLogin, userId, pwd);
         else
@@ -76,7 +63,6 @@ public class MLogin {
      */
     public void loginBySSO(boolean autoLogin, String userId, String password) {
         if (autoLogin && !TextUtils.isEmpty(userId) && !TextUtils.isEmpty(password)) {
-            isSSO = true;
             login(userId, "", password, true);
         } else {
             goLoginActivity();
@@ -103,9 +89,6 @@ public class MLogin {
      * @param isSSO    单点登录不弹出登陆进度框
      */
     public void login(String userId, String password, String verifyCode, boolean isSSO) {
-        this.userId = userId;
-        this.password = password;
-        this.verifyCode = verifyCode;
         RequestParams p = new RequestParams();
         String timeTemp = String.valueOf(System.currentTimeMillis());
         MSharedPreferenceUtils.saveStringSettings(context, "loginTime", timeTemp, true);
@@ -140,62 +123,7 @@ public class MLogin {
             @Override
             public void onSuccess(JSONObject responseObj) {
 
-                try {
-                    Log.e("MLogin", responseObj.toString());
-                    com.alibaba.fastjson.JSONObject dataObj = com.alibaba.fastjson.JSONObject.parseObject(responseObj.getJSONObject("data").toString());
-
-                    String userId = dataObj.getString("userId") != null ? Key64.decipher(dataObj.getString("userId")) : "";
-                    if (!userId.equals(MLogin.this.userId)) {
-                        callback.onLoginFailed(context.getString(R.string.login_exception));
-                        return;
-                    }
-
-                    String loginTime;
-                    try {
-                        loginTime = Key64.decipher(dataObj.getString("loginTime"));
-                        if (!MSharedPreferenceUtils.queryStringBySettings(context, "loginTime").equals(loginTime)) {
-                            callback.onLoginFailed(context.getString(R.string.login_exception));
-                            return;
-                        }
-
-                    } catch (Exception e) {
-                    }
-                    String areaCode = null;
-                    try {
-                        areaCode = dataObj.getString("areaCode") != null ? dataObj.getString("areaCode") : "";
-                    } catch (Exception e) {
-                    }
-                    String telephone = null;
-                    try {
-                        telephone = dataObj.getString("telephone") != null ? Key64.decipher(dataObj.getString("telephone")) : "";
-                    } catch (Exception e) {
-                    }
-
-                    String userName = dataObj.getString("userName") != null ? Key64.decipher(dataObj.getString("userName")) : "";
-                    String organization = dataObj.getString("orgName") != null ? dataObj.getString("orgName") : "";
-                    String ticket = dataObj.getString("ticket") != null ? dataObj.getString("ticket") : "";
-                    if(dataObj.getString("accessToken") != null)
-                    MSharedPreferenceUtils.saveStringSettings(context, "access_token", RSAUtils.decryptByPrivateKeyStr(dataObj.getJSONObject("accessToken").getString("access_token"),Constants.EOS_PRIVITE_KEY), true);
-                    //处理返回的应用列表
-                    AppStore.get().appsJson2List(responseObj);
-                    //将登陆数据进行缓存
-                    if (isSSO) {
-                        UserInfo.get().create(userId, areaCode, userName, password, organization, ticket, telephone);
-                    } else {
-                        UserInfo.get().create(userId, areaCode, userName, password, organization, ticket, telephone).save();
-                    }
-                    MSharedPreferenceUtils.saveBooleanSettings(context, Constants.KEY_PREFERENCE_AUTO_LOGIN, autoLogin);
-                    MSharedPreferenceUtils.saveBooleanSettings(context, Constants.KEY_PREFERENCE_CHANGE_ACCOUNT, false);
-                    callback.onLoginSuccess();
-                } catch (com.alibaba.fastjson.JSONException e) {
-                    e.printStackTrace();
-                    callback.onLoginFailed(context.getString(R.string.data_parse_error_by_login));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    callback.onLoginFailed(context.getString(R.string.data_parse_error_by_login));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                callback.onLoginSuccess();
             }
 
             @Override

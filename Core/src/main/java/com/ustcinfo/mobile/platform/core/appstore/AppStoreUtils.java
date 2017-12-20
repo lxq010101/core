@@ -120,84 +120,21 @@ public class AppStoreUtils {
         }
     }
 
-    public static void launchApp(final Activity activity, final AppInfo info) {
-            switch (info.type) {
-                case 0:
-                    try {
-
-                        NativeAppUtils.launch(activity, info);
-                    }catch (ActivityNotFoundException ex){
-                        TastyToast.makeText(activity,"没有找到该页面",TastyToast.LENGTH_SHORT,TastyToast.ERROR);
-                    }
-                    break;
-                case 2:
-                case 3:
-                    WebAppUtils.launch(activity, info);
-                    break;
-        }
-    }
 
     public static void launchAppByInfo(final Activity activity, final AppInfo info) {
-        if (info.packageName.equals("com.ict.liaction.check") || info.packageName.equals("cn.com.starit.ess.mobile.view.labelprint") || info.packageName.equals("com.kdgc.bluetoothprinter")) {
-            Log.e("TAG", info.packageName);
-            switch (info.type) {
-                case 0:
+        switch (info.type) {
+            case 0:
+                try {
+
                     NativeAppUtils.launch(activity, info);
-                    break;
-                case 2:
-                case 3:
-                    WebAppUtils.launch(activity, info);
-                    break;
-            }
-        } else {
-            RequestParams requestParams = new RequestParams();
-            ((BaseActivity) activity).showProgressBar();
-            try {
-                requestParams.put("packageName", info.packageName);
-                requestParams.put("orgUuid", com.alibaba.fastjson.JSONObject.parseObject(MSharedPreferenceUtils.queryStringBySettings(activity, "access_token")).getJSONObject("user").getString("orgUuid"));
-                requestParams.put("access_token", RSAUtils.encryptByPrivateKeyStr(MSharedPreferenceUtils.queryStringBySettings(activity, "access_token"), Constants.EOS_PRIVITE_KEY));
-                Log.d("TAG",RSAUtils.encryptByPrivateKeyStr(MSharedPreferenceUtils.queryStringBySettings(activity, "access_token"), Constants.EOS_PRIVITE_KEY));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            MHttpClient.get().post2(MConfig.get("getAuthCode"), requestParams, new HttpRequestCallbak() {
-                @Override
-                public void onSuccess(JSONObject responseObj) {
-                    ((BaseActivity) activity).closeProgressBar();
-                    try {
-                        if (responseObj.get("code").equals("0")) {
-                            switch (info.type) {
-                                case 0:
-                                    NativeAppUtils.launch(activity, info, responseObj.getJSONObject("data").getString("code"), responseObj.getJSONObject("data").getString("redirectUri"));
-                                    break;
-                                case 2:
-                                case 3:
-                                    WebAppUtils.launch(activity, info, responseObj.getJSONObject("data").getString("code"), responseObj.getJSONObject("data").getString("redirectUri"));
-                                    break;
-                            }
-                        } else {
-                            TastyToast.makeText(activity, "登陆过期,请重新登陆", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
-                            Intent intent = new Intent(activity, Class.forName(MConfig.getActivity("login")));
-                            activity.startActivity(intent);
-                            SystemCore.get().exit(activity);
-                            activity.finish();
-                        }
-                    } catch (com.alibaba.fastjson.JSONException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                }catch (ActivityNotFoundException ex){
+                    TastyToast.makeText(activity,"没有找到该页面",TastyToast.LENGTH_SHORT,TastyToast.ERROR);
                 }
-
-                @Override
-                public void onFailed(String msg) {
-                    ((BaseActivity) activity).closeProgressBar();
-                    TastyToast.makeText(activity, "打开失败", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
-                }
-            });
+                break;
+            case 2:
+            case 3:
+                WebAppUtils.launch(activity, info);
+                break;
         }
     }
 
