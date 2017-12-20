@@ -16,6 +16,7 @@
 package com.ustcinfo.mobile.platform.core.interfaces;
 
 
+import org.json.JSONObject;
 
 /**
  * 
@@ -25,6 +26,6 @@ package com.ustcinfo.mobile.platform.core.interfaces;
  */
 public interface LoginCallBack {
 	void onLoginStart() ;
-	void onLoginSuccess() ;
+	void onLoginSuccess(JSONObject res) ;
 	void onLoginFailed(String message) ;
 }
