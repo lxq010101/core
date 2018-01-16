@@ -32,7 +32,7 @@ public class MConfig {
     /**
      * 日志开关
      */
-    public static final Boolean DEBUGABLE = true;
+    public static final Boolean DEBUGABLE = false;
 
     /**
      * 日志名称
