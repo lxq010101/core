@@ -2,6 +2,7 @@ package com.ustcinfo.mobile.platform.core.model;
 
 
 import com.ustcinfo.mobile.platform.core.core.SystemCore;
+import com.ustcinfo.mobile.platform.core.utils.Descry;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -87,7 +88,7 @@ public class UserInfo implements Serializable {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         StringBuilder b = new StringBuilder();
 		
-		String userIds=Descry.encrypt(userId);
+		String userIds= Descry.encrypt(userId);
         String areaCodes=Descry.encrypt(areaCode);
         String passwords=Descry.encrypt(password);
         String telephoneNumbers=Descry.encrypt(telephoneNumber);
