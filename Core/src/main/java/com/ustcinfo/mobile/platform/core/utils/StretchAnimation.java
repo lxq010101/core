@@ -135,7 +135,6 @@ public class StretchAnimation {
 		if (view != null) {
 			mView = view;
 		} else {
-			Log.e(TAG, "view 不能为空");
 			return;
 		}
 		LayoutParams params = mView.getLayoutParams();
@@ -147,7 +146,6 @@ public class StretchAnimation {
 			} else if (mType == TYPE.horizontal) {
 				mRawSize = mCurrSize = mView.getWidth();
 			}
-			Log.i(TAG, "mRawSize=" + mRawSize);
 			if (mCurrSize > mMaxSize || mCurrSize < mMinSize) {
 				/*throw new RuntimeException(
 						"View 的大小不达标 currentViewSize > mMaxSize || currentViewSize < mMinSize");*/
@@ -159,7 +157,6 @@ public class StretchAnimation {
 			} else {
 				mDSize = mMinSize - mMaxSize;
 			}
-			Log.i(TAG, "mDSize=" + mDSize);
 			mHandler.sendEmptyMessage(1);
 		}
 	}

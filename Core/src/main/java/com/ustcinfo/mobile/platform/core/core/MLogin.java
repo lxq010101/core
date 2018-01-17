@@ -118,7 +118,6 @@ public class MLogin {
 
     private void loginByParams(String url, final RequestParams params) {
         callback.onLoginStart();
-        Log.i("request  ", "loginByParams:    params ===   " + params);
         MHttpClient.get().post(url, params, new HttpRequestCallbak() {
             @Override
             public void onSuccess(JSONObject responseObj) {

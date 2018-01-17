@@ -69,17 +69,14 @@ public class BitmapUtils {
 	 * */
 	public static void saveMyBitmap4SDCard(String imageDir, String imageName, Bitmap bitmap){
 		FileOutputStream fOut = null;
-		Log.d("csf", imageDir+imageName) ;
 		try {
 			boolean flag = false;
 			File dir = new File(imageDir);
 			if(!dir.exists()){
 				flag =  dir.mkdirs();
-				Log.d("csf", imageDir + "创建结果：" + flag);
 			}
 			if(!dir.isDirectory()){
 				flag =  dir.mkdirs();
-				Log.d("csf", imageDir + "创建结果：" + flag);
 			}
 			File f = new File(imageDir+imageName);
 			f.createNewFile();
