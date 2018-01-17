@@ -52,7 +52,7 @@ public class MConfig {
     /**
      * 日志是否写在SD卡
      */
-    public static final Boolean LOG_2_SDCARD = true;
+    public static final Boolean LOG_2_SDCARD = false;
 
     /**
      * 日志文件大小
