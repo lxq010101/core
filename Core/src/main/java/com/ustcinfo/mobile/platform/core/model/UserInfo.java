@@ -86,12 +86,18 @@ public class UserInfo implements Serializable {
         SystemCore.get().clearUserCache();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         StringBuilder b = new StringBuilder();
+		
+		String userIds=Descry.encrypt(userId);
+        String areaCodes=Descry.encrypt(areaCode);
+        String passwords=Descry.encrypt(password);
+        String telephoneNumbers=Descry.encrypt(telephoneNumber);
+        String tickets=Descry.encrypt(ticket);
         b.append("insert into user values( ")
-                .append("'").append(userId).append("' ,")
-                .append("'").append(areaCode).append("' ,")
-                .append("'").append(password).append("' ,")
-                .append("'").append(telephoneNumber).append("' ,")
-                .append("'").append(ticket).append("' ,")
+                .append("'").append(userIds).append("' ,")
+                .append("'").append(areaCodes).append("' ,")
+                .append("'").append(passwords).append("' ,")
+                .append("'").append(telephoneNumbers).append("' ,")
+                .append("'").append(tickets).append("' ,")
                 .append("'").append(sdf.format(new Date())).append("')");
         SystemCore.get().getDatabase().execSQL(b.toString());
     }
@@ -101,7 +107,7 @@ public class UserInfo implements Serializable {
         List<Map<String, String>> list = SystemCore.get().getDatabase().find("select * from user");
         if (list.size() == 0)
             return null;
-        return list.get(0).get("user_id");
+        return Descry.decrypt(list.get(0).get("user_id"));
     }
 
 
@@ -109,7 +115,7 @@ public class UserInfo implements Serializable {
         List<Map<String, String>> list = SystemCore.get().getDatabase().find("select * from user");
         if (list.size() == 0)
             return null;
-        return list.get(0).get("password");
+        return Descry.decrypt(list.get(0).get("password"));
     }
 
     public String getTicketCache() {
@@ -117,7 +123,7 @@ public class UserInfo implements Serializable {
         if (list.size() == 0) {
             return null;
         }
-        return list.get(0).get("ticket");
+        return Descry.decrypt(list.get(0).get("ticket"));
     }
 
 
