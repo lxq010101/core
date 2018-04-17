@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
+import com.amap.api.loc.MoblickAgent;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -44,13 +45,13 @@ public class IndexActivity extends Activity {
         rxPermissions.request
                 (Manifest.permission.CAMERA,
                         Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA,Manifest.permission.CALL_PHONE)
+                        Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.CALL_PHONE)
                 .subscribe(new Action1<Boolean>() {
                     @Override
                     public void call(Boolean aBoolean) {
-                        if(!aBoolean){
+                        if (!aBoolean) {
 
-                            final   MAlertDialog alertDialog = new MAlertDialog(IndexActivity.this, false, true);
+                            final MAlertDialog alertDialog = new MAlertDialog(IndexActivity.this, false, true);
                             alertDialog.setCancelable(true).setDialogCanceledOnTouchOutside(false).setTitle("应用权限").setContent("请务必给予应用相应的权限")
                                     .setCancelClickListener(new View.OnClickListener() {
                                         @Override
@@ -77,7 +78,7 @@ public class IndexActivity extends Activity {
                             }).show();
 
 
-                        }else{
+                        } else {
                             Logger.init();
                             initLocation();
                             try {
@@ -108,6 +109,7 @@ public class IndexActivity extends Activity {
                     String province = amapLocation.getProvince();
                     UserInfo.get().setCityCode(cityCode);
                     UserInfo.get().setProvince(province);
+                    MoblickAgent.init(IndexActivity.this);
                     mLocationClient.stopLocation();
                     mLocationClient.onDestroy();
                 }
