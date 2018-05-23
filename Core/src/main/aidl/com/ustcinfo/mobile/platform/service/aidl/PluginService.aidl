@@ -9,4 +9,7 @@ interface PluginService {
      * and return values in AIDL.
      */
 	String invoke(String operatorType ,String jsonString);
+
+	//山东联通单点登录
+	String invokeSd(String operatorType ,String jsonString);
 }

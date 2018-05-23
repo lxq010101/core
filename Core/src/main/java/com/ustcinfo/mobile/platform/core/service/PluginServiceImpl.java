@@ -55,5 +55,32 @@ public class PluginServiceImpl extends Service {
             }
             return result;
         }
+
+
+        @Override
+        public String invokeSd(String operatorType, String jsonString) throws RemoteException {
+            Logger.i("invokeSd","optType: "+ operatorType+" ,Json:"+jsonString);
+            String result = null ;
+            try {
+                JSONObject obj = new JSONObject(jsonString) ;
+                String key = obj.getString("SECURITY_KEY");
+                String pkg = obj.getString("package") ;
+                //安全密匙校验
+                if(!TextUtils.equals(key ,SECURITY_KEY)){
+                    return ResultFactory.createFailed(ResultFactory.CODE_FAILED_SECURITY_KEY) ;
+                }
+                //是否在应用市场中发布
+                if(!AppStoreUtils.isAppPublicInStore(pkg)){
+                    return ResultFactory.createFailed(ResultFactory.CODE_FAILED_NOT_PUBLISH_ON_STORE) ;
+                }
+                return RemoteInterAdapter.invoke(operatorType,jsonString,pkg) ;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                result = ResultFactory.createFailed(ResultFactory.CODE_FAILED_JSON_PARSE) ;
+            }
+            return result;
+        }
+
+
     }
 }

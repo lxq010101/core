@@ -39,6 +39,15 @@ public class ResultFactory {
 	//未知操作
 	public static final int CODE_FAILED_UNKONW_OPERATE= 4;
 
+	//获取子应用映射信息时错误
+	public static final int CODE_FAILED_MAPPING_ERROR = 100;
+
+	//获取子应用映射信息解析错误
+	public static final int CODE_FAILED_ANALIZE_ERROR = 101;
+
+	//门户没有映射该用户数据
+	public static final int CODE_FAILED_NOUSER_ERROR = 102;
+
 
 	public static String createFailed(int code) {
 		String desc = "The request is invalid";
@@ -60,6 +69,15 @@ public class ResultFactory {
 				break;
 			case CODE_FAILED_UNKONW_OPERATE:
 				desc = "未知操作，请联系平台开发人员";
+				break;
+			case CODE_FAILED_MAPPING_ERROR:
+				desc = "请求子应用用户数据错误,请联系平台开发人员解决";
+				break;
+			case CODE_FAILED_ANALIZE_ERROR:
+				desc = "子应用数据解析有误,请联系平台开发人员解决";
+				break;
+			case CODE_FAILED_NOUSER_ERROR:
+				desc = "未查询到该用户的相关信息,请联系平台开发人员解决";
 				break;
 			}
 			errorObj.put("desc", desc);

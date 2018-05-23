@@ -9,12 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
-import com.amap.api.loc.MoblickAgent;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.tbruyelle.rxpermissions.RxPermissions;
+import com.umeng.analytices.MobclickAgent;
 import com.ustcinfo.mobile.platform.core.config.MConfig;
 import com.ustcinfo.mobile.platform.core.log.Logger;
 import com.ustcinfo.mobile.platform.core.model.UserInfo;
@@ -81,6 +81,7 @@ public class IndexActivity extends Activity {
                         } else {
                             Logger.init();
                             initLocation();
+                            com.amap.AmapLocation.launch(IndexActivity.this);
                             try {
                                 Intent intent = new Intent();
                                 MConfig.init(IndexActivity.this);
@@ -109,7 +110,6 @@ public class IndexActivity extends Activity {
                     String province = amapLocation.getProvince();
                     UserInfo.get().setCityCode(cityCode);
                     UserInfo.get().setProvince(province);
-                    MoblickAgent.init(IndexActivity.this);
                     mLocationClient.stopLocation();
                     mLocationClient.onDestroy();
                 }
@@ -129,6 +129,16 @@ public class IndexActivity extends Activity {
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
         mLocationClient.startLocation();
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
 }

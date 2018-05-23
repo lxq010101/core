@@ -36,8 +36,8 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
-    compile 'com.github.zxy24:locationHelper:1.1.4'
     compile files('libs/android-async-http-1.4.8.jar')
     compile 'com.github.lxq010101:ability:1.0.7'
+    implementation 'com.github.SunndyZhao:umeng:latest.release'
 
 }
