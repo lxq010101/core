@@ -66,11 +66,17 @@ public class RemoteInterAdapter {
     static Runnable runnable = new Runnable(){
         @Override
         public void run() {
+            String userId = UserInfo.get().getUserIdCache();
+            if (TextUtils.isEmpty(userId)){
+                result = ResultFactory.createFailed(ResultFactory.CODE_FAILED_MAPPING_ERROR);
+                return;
+
+            }
             OkHttpClient okHttpClient = new OkHttpClient();
             //Form表单格式的参数传递
             FormBody formBody = new FormBody
                     .Builder()
-                    .add("userId","qincz2")
+                    .add("userId",userId)
                     .add("pkg",packagename)
                     .build();
             Request request = new Request
