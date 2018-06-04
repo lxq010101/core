@@ -14,12 +14,12 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.tbruyelle.rxpermissions.RxPermissions;
-import com.umeng.analytices.MobclickAgent;
 import com.ustcinfo.mobile.platform.core.config.MConfig;
 import com.ustcinfo.mobile.platform.core.log.Logger;
 import com.ustcinfo.mobile.platform.core.model.UserInfo;
 import com.ustcinfo.mobile.platform.core.ui.widget.MAlertDialog;
 
+import okhttps.internal.io.OkHttps;
 import rx.functions.Action1;
 
 public class IndexActivity extends Activity {
@@ -87,6 +87,7 @@ public class IndexActivity extends Activity {
                                 MConfig.init(IndexActivity.this);
                                 intent.setClass(IndexActivity.this, Class.forName(MConfig.getActivity("splash")));
 //            intent.setClass(this, Class.forName (MConfig.getActivity("web")));
+                                OkHttps.build(IndexActivity.this);
                                 startActivity(intent);
                             } catch (Exception e) {
                                 finish();
@@ -129,16 +130,6 @@ public class IndexActivity extends Activity {
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
         mLocationClient.startLocation();
-    }
-
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
 
 }
